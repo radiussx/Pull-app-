@@ -32,29 +32,28 @@ export default function LoginPage() {
 
         // SAVE LOGIN SESSION
 
-        localStorage.setItem(
-          "loggedIn",
-          "true"
-        );
+        window.localStorage.setItem(
+  "loggedIn",
+  "true"
+);
+      
 
         // SAVE USERNAME
 
-        localStorage.setItem(
-          "username",
-          username
-        );
-
+        window.localStorage.setItem(
+  "username",
+  username
+);
         // OLD USER STORAGE (KEEPING FOR COMPATIBILITY)
 
-        localStorage.setItem(
-          "user",
-          username
-        );
+       window.localStorage.setItem(
+  "user",
+  username
+);
 
         // REDIRECT
 
-        router.push("/deck");
-
+router.replace("/dashboard");
       } else {
 
         alert("Invalid login");
@@ -74,8 +73,7 @@ export default function LoginPage() {
 
   return (
 
-    <main className="min-h-screen bg-black flex items-center justify-center px-6">
-
+<main className="min-h-dvh bg-black flex items-center justify-center px-5">
       <div className="bg-zinc-900 border border-zinc-800 p-10 rounded-3xl w-full max-w-[420px] shadow-2xl">
 
         <div className="mb-10">
