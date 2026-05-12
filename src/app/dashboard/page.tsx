@@ -195,6 +195,15 @@ export default function DashboardPage() {
         </div>
 
       </div>
+      // =========================
+  // LOGOUT
+  // =========================
+  const logout = () => {
+
+    localStorage.removeItem("user");
+
+    router.push("/login");
+  };
 
     </ProtectedRoute>
   );

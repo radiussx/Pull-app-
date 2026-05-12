@@ -128,7 +128,15 @@ export default function MilkPage() {
               </div>
 
             </div>
+// =========================
+  // LOGOUT
+  // =========================
+  const logout = () => {
 
+    localStorage.removeItem("user");
+
+    router.push("/login");
+  };
           ))}
 
         </div>

@@ -180,7 +180,15 @@ export default function BreakfastPage() {
         </a>
 
       </div>
+// =========================
+  // LOGOUT
+  // =========================
+  const logout = () => {
 
+    localStorage.removeItem("user");
+
+    router.push("/login");
+  };
     </main>
   );
 }

@@ -176,7 +176,15 @@ export default function BakeryPage() {
         </a>
 
       </div>
+// =========================
+  // LOGOUT
+  // =========================
+  const logout = () => {
 
+    localStorage.removeItem("user");
+
+    router.push("/login");
+  };
     </div>
   );
 }
