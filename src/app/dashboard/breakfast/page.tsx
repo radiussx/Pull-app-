@@ -10,6 +10,8 @@ interface PullItem {
 
 export default function BreakfastPage() {
 
+
+
   const [items, setItems] =
     useState<PullItem[]>([]);
 
@@ -20,12 +22,28 @@ export default function BreakfastPage() {
         localStorage.getItem("pullData") || "[]"
       );
 
-    const filtered =
+    // FILTER Breakfast ITEMS
+    const BreakfastItems =
       saved.filter(
         (item: PullItem) =>
           item.category === "Breakfast" &&
           item.pullRequired >= 1
       );
+
+    // REMOVE DUPLICATES
+    const latestMap = new Map();
+
+    BreakfastItems.forEach((item: PullItem) => {
+
+      latestMap.set(
+        item.itemName,
+        item
+      );
+
+    });
+
+    const filtered =
+      Array.from(latestMap.values());
 
     setItems(filtered);
 
@@ -33,64 +51,72 @@ export default function BreakfastPage() {
 
   return (
 
-    <main className="min-h-dvh bg-black text-white px-5 pt-8 pb-32">
+    <div className="min-h-screen bg-black text-white px-4 pt-5 pb-28">
 
-      {/* HEADER */}
+       {/* TOP BAR */}
 
-      <h1 className="text-4xl font-bold mb-8">
+    <div className="flex justify-between items-center mb-6">
+
+      <h1 className="text-3xl font-bold">
         Breakfast Pulls
       </h1>
 
-      {/* EMPTY */}
+      <button
+        onClick={() => {
 
-      {items.length === 0 && (
+          localStorage.removeItem("user");
 
-        <div className="bg-zinc-900 rounded-3xl p-6 text-center text-zinc-400 mb-6">
-          No breakfast pulls right now.
-        </div>
+          window.location.href = "/";
 
-      )}
+        }}
+        className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-2xl text-sm font-bold"
+      >
+        Logout
+      </button>
+
+    </div>
 
       {/* CHART */}
 
-      <div className="space-y-5 mb-8">
+      <div className="bg-zinc-900 rounded-3xl p-5 mb-6">
 
-        {items.map((item, index) => (
+        <h2 className="text-2xl font-bold mb-5">
+          Pull Chart
+        </h2>
 
-          <div
-            key={index}
-            className="bg-zinc-900 rounded-3xl p-5"
-          >
+        <div className="space-y-5">
 
-            <div className="flex justify-between mb-3">
+          {items.map((item, index) => (
 
-              <h2 className="text-lg font-bold">
-                {item.itemName}
-              </h2>
+            <div key={index}>
 
-              <span className="text-green-500 font-bold text-lg">
-                {item.pullRequired}
-              </span>
+              <div className="flex justify-between mb-2">
+
+                <span className="text-sm font-medium">
+                  {item.itemName}
+                </span>
+
+                <span className="text-green-500 font-bold text-sm">
+                  {item.pullRequired}
+                </span>
+
+              </div>
+
+              <div className="w-full h-4 bg-zinc-800 rounded-full overflow-hidden">
+
+                <div
+                  className="h-full bg-green-600"
+                  style={{
+                    width: `${Math.min(item.pullRequired * 15, 100)}%`,
+                  }}
+                />
+
+              </div>
 
             </div>
+          ))}
 
-            <div className="w-full h-4 bg-zinc-800 rounded-full overflow-hidden">
-
-              <div
-                className="h-full bg-green-600 rounded-full"
-                style={{
-                  width: `${Math.min(
-                    item.pullRequired * 15,
-                    100
-                  )}%`,
-                }}
-              />
-
-            </div>
-
-          </div>
-
-        ))}
+        </div>
 
       </div>
 
@@ -102,7 +128,7 @@ export default function BreakfastPage() {
           Pull Table
         </h2>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
 
           {items.map((item, index) => (
 
@@ -111,24 +137,15 @@ export default function BreakfastPage() {
               className="flex justify-between items-center bg-black rounded-2xl p-4"
             >
 
-              <div>
+              <span className="text-sm">
+                {item.itemName}
+              </span>
 
-                <p className="font-bold text-base">
-                  {item.itemName}
-                </p>
-
-                <p className="text-zinc-500 text-sm">
-                  Breakfast
-                </p>
-
-              </div>
-
-              <div className="text-green-500 text-2xl font-bold">
+              <span className="text-green-500 font-bold text-lg">
                 {item.pullRequired}
-              </div>
+              </span>
 
             </div>
-
           ))}
 
         </div>
@@ -137,7 +154,7 @@ export default function BreakfastPage() {
 
       {/* NAV */}
 
-      <div className="fixed bottom-0 left-0 right-0 h-20 bg-black border-t border-zinc-800 flex items-center justify-around z-50">
+      <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-zinc-800 h-20 flex items-center justify-around z-50">
 
         <a
           href="/dashboard"
@@ -156,8 +173,8 @@ export default function BreakfastPage() {
         </a>
 
         <a
-          href="/dashboard/bakery"
-          className="flex flex-col items-center text-zinc-400 text-[10px]"
+          href="/dashboard/Breakfast"
+          className="flex flex-col items-center text-green-500 text-[10px] font-bold"
         >
           <span className="text-lg">🥐</span>
           Bakery
@@ -165,14 +182,14 @@ export default function BreakfastPage() {
 
         <a
           href="/dashboard/breakfast"
-          className="flex flex-col items-center text-green-500 text-[10px] font-bold"
+          className="flex flex-col items-center text-zinc-400 text-[10px]"
         >
           <span className="text-lg">🍳</span>
           Breakfast
         </a>
 
         <a
-          href="/dashboard/milk"
+          href="/dashboard/Breakfast"
           className="flex flex-col items-center text-zinc-400 text-[10px]"
         >
           <span className="text-lg">🥛</span>
@@ -181,6 +198,6 @@ export default function BreakfastPage() {
 
       </div>
 
-    </main>
+    </div>
   );
 }

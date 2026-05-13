@@ -22,7 +22,21 @@ export default function DashboardPage() {
     <ProtectedRoute>
 
       <div className="min-h-screen bg-black text-white pb-28">
+{/* LOGOUT BUTTON */}
 
+<div className="flex justify-end px-4 pt-4">
+
+  <button
+    onClick={() => {
+      localStorage.removeItem("user");
+      window.location.href = "/";
+    }}
+    className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-2xl font-bold text-sm"
+  >
+    Logout
+  </button>
+
+</div>
         {/* HEADER */}
 
         <div className="px-5 pt-8">
@@ -31,13 +45,13 @@ export default function DashboardPage() {
 
           <div className="flex justify-center mb-6">
 
-            <img
-              src="https://upload.wikimedia.org/wikipedia/sco/thumb/d/d3/Starbucks_Corporation_Logo_2011.svg/2048px-Starbucks_Corporation_Logo_2011.svg.png"
-              alt="Starbucks"
-              className="w-24 h-24 rounded-full"
-            />
+  <img
+    src="/logo.png"
+    alt="Starbucks"
+    className="w-28 h-28 object-contain"
+  />
 
-          </div>
+</div>
 
           {/* TITLE */}
 
@@ -195,15 +209,6 @@ export default function DashboardPage() {
         </div>
 
       </div>
-      // =========================
-  // LOGOUT
-  // =========================
-  const logout = () => {
-
-    localStorage.removeItem("user");
-
-    router.push("/login");
-  };
 
     </ProtectedRoute>
   );

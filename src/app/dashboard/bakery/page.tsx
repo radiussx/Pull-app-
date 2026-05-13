@@ -51,10 +51,28 @@ export default function BakeryPage() {
 
     <div className="min-h-screen bg-black text-white px-4 pt-5 pb-28">
 
-      <h1 className="text-3xl font-bold mb-6">
+       {/* TOP BAR */}
+
+    <div className="flex justify-between items-center mb-6">
+
+      <h1 className="text-3xl font-bold">
         Bakery Pulls
       </h1>
 
+      <button
+        onClick={() => {
+
+          localStorage.removeItem("user");
+
+          window.location.href = "/";
+
+        }}
+        className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-2xl text-sm font-bold"
+      >
+        Logout
+      </button>
+
+    </div>
       {/* CHART */}
 
       <div className="bg-zinc-900 rounded-3xl p-5 mb-6">
