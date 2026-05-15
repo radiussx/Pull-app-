@@ -10,20 +10,27 @@ interface PullItem {
 
 export default function BreakfastPage() {
 
-
-
   const [items, setItems] =
     useState<PullItem[]>([]);
+
+  const [role, setRole] =
+    useState("");
 
   useEffect(() => {
 
     const saved =
       JSON.parse(
-        localStorage.getItem("pullData") || "[]"
+        sessionStorage.getItem("pullData") || "[]"
       );
 
-    // FILTER Breakfast ITEMS
-    const BreakfastItems =
+    // LOAD ROLE
+    const savedRole =
+      sessionStorage.getItem("role") || "";
+
+    setRole(savedRole);
+
+    // FILTER BREAKFAST ITEMS
+    const breakfastItems =
       saved.filter(
         (item: PullItem) =>
           item.category === "Breakfast" &&
@@ -33,7 +40,7 @@ export default function BreakfastPage() {
     // REMOVE DUPLICATES
     const latestMap = new Map();
 
-    BreakfastItems.forEach((item: PullItem) => {
+    breakfastItems.forEach((item: PullItem) => {
 
       latestMap.set(
         item.itemName,
@@ -53,28 +60,28 @@ export default function BreakfastPage() {
 
     <div className="min-h-screen bg-black text-white px-4 pt-5 pb-28">
 
-       {/* TOP BAR */}
+      {/* TOP BAR */}
 
-    <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6">
 
-      <h1 className="text-3xl font-bold">
-        Breakfast Pulls
-      </h1>
+        <h1 className="text-3xl font-bold">
+          Breakfast Pulls
+        </h1>
 
-      <button
-        onClick={() => {
+        <button
+          onClick={() => {
 
-          localStorage.removeItem("user");
+            sessionStorage.clear();
 
-          window.location.href = "/";
+            window.location.href = "/";
 
-        }}
-        className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-2xl text-sm font-bold"
-      >
-        Logout
-      </button>
+          }}
+          className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-2xl text-sm font-bold"
+        >
+          Logout
+        </button>
 
-    </div>
+      </div>
 
       {/* CHART */}
 
@@ -173,8 +180,8 @@ export default function BreakfastPage() {
         </a>
 
         <a
-          href="/dashboard/Breakfast"
-          className="flex flex-col items-center text-green-500 text-[10px] font-bold"
+          href="/dashboard/bakery"
+          className="flex flex-col items-center text-zinc-400 text-[10px]"
         >
           <span className="text-lg">🥐</span>
           Bakery
@@ -182,19 +189,31 @@ export default function BreakfastPage() {
 
         <a
           href="/dashboard/breakfast"
-          className="flex flex-col items-center text-zinc-400 text-[10px]"
+          className="flex flex-col items-center text-green-500 text-[10px] font-bold"
         >
           <span className="text-lg">🍳</span>
           Breakfast
         </a>
 
         <a
-          href="/dashboard/Breakfast"
+          href="/dashboard/milk"
           className="flex flex-col items-center text-zinc-400 text-[10px]"
         >
           <span className="text-lg">🥛</span>
           Milk
         </a>
+
+        {role === "admin" && (
+
+          <a
+            href="/dashboard/admin"
+            className="flex flex-col items-center text-red-400 text-[10px]"
+          >
+            <span className="text-lg">🛡️</span>
+            Admin
+          </a>
+
+        )}
 
       </div>
 

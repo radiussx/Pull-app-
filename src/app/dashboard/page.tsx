@@ -5,38 +5,62 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function DashboardPage() {
 
+  // USERNAME
   const [username, setUsername] =
     useState("");
 
+  // ROLE
+  const [role, setRole] =
+    useState("");
+
+  // =========================
+  // LOAD USER DATA
+  // =========================
+
   useEffect(() => {
 
+    const savedRole =
+      sessionStorage.getItem("role") || "";
+
+    setRole(savedRole);
+
     const user =
-      localStorage.getItem("user") || "";
+      sessionStorage.getItem("user") || "";
 
     setUsername(user);
 
   }, []);
+
+  // =========================
+  // LOGOUT
+  // =========================
+
+  const logout = () => {
+
+    sessionStorage.clear();
+
+    window.location.href = "/login";
+  };
 
   return (
 
     <ProtectedRoute>
 
       <div className="min-h-screen bg-black text-white pb-28">
-{/* LOGOUT BUTTON */}
 
-<div className="flex justify-end px-4 pt-4">
+        {/* LOGOUT BUTTON */}
 
-  <button
-    onClick={() => {
-      localStorage.removeItem("user");
-      window.location.href = "/";
-    }}
-    className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-2xl font-bold text-sm"
-  >
-    Logout
-  </button>
+        <div className="flex justify-end px-4 pt-4">
 
-</div>
+          <button
+            onClick={logout}
+            className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-2xl font-bold text-sm"
+          >
+            Logout
+          </button>
+
+        </div>
+
         {/* HEADER */}
 
         <div className="px-5 pt-8">
@@ -45,13 +69,13 @@ export default function DashboardPage() {
 
           <div className="flex justify-center mb-6">
 
-  <img
-    src="/logo.png"
-    alt="Starbucks"
-    className="w-28 h-28 object-contain"
-  />
+            <img
+              src="/logo.png"
+              alt="Starbucks"
+              className="w-28 h-28 object-contain"
+            />
 
-</div>
+          </div>
 
           {/* TITLE */}
 
@@ -205,6 +229,20 @@ export default function DashboardPage() {
             <span>🥛</span>
             Milk
           </a>
+
+          {/* ADMIN BUTTON */}
+
+          {role === "admin" && (
+
+            <a
+              href="/dashboard/admin"
+              className="flex flex-col items-center text-red-400 text-xs"
+            >
+              <span>🛡️</span>
+              Admin
+            </a>
+
+          )}
 
         </div>
 

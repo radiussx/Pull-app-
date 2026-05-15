@@ -19,7 +19,7 @@ export default function InventoryCard({
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    const savedValue = localStorage.getItem(storageKey);
+    const savedValue = sessionStorage.getItem(storageKey);
 
     if (savedValue) {
       setCount(Number(savedValue));
@@ -27,7 +27,7 @@ export default function InventoryCard({
   }, []);
 
   const saveInventory = () => {
-    localStorage.setItem(storageKey, String(count));
+    sessionStorage.setItem(storageKey, String(count));
 
     setSaved(true);
 

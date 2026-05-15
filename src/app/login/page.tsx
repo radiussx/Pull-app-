@@ -16,6 +16,10 @@ export default function LoginPage() {
   const [loading, setLoading] =
     useState(false);
 
+  // =========================
+  // LOGIN
+  // =========================
+
   async function login() {
 
     try {
@@ -26,17 +30,24 @@ export default function LoginPage() {
         `${process.env.NEXT_PUBLIC_SCRIPT_URL}?action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
       );
 
-      const data = await response.json();
+      const data =
+        await response.json();
+
+      // =========================
+      // SUCCESS
+      // =========================
 
       if (data.success) {
 
-        // =========================
+        // CLEAR OLD STORAGE
+
+        sessionStorage.clear();
+
         // SAVE SESSION
-        // =========================
 
         sessionStorage.setItem(
-          "user",
-          username
+          "loggedIn",
+          "true"
         );
 
         sessionStorage.setItem(
@@ -44,16 +55,33 @@ export default function LoginPage() {
           username
         );
 
-        // =========================
+        sessionStorage.setItem(
+          "user",
+          username
+        );
+
+        sessionStorage.setItem(
+          "role",
+          data.role
+        );
+
+        sessionStorage.setItem(
+          "sessionId",
+          data.sessionId
+        );
+
         // REDIRECT
-        // =========================
 
         router.replace("/dashboard");
 
-      } else {
-
-        alert("Invalid login");
+        return;
       }
+
+      // =========================
+      // INVALID LOGIN
+      // =========================
+
+      alert("Invalid username or password");
 
     } catch (error) {
 
@@ -67,29 +95,43 @@ export default function LoginPage() {
     }
   }
 
+  // =========================
+  // ENTER KEY SUPPORT
+  // =========================
+
+  function handleKeyDown(
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) {
+
+    if (e.key === "Enter") {
+
+      login();
+    }
+  }
+
   return (
 
-    <main className="min-h-dvh bg-black flex items-center justify-center px-5">
+    <main className="min-h-screen bg-black flex items-center justify-center px-5">
 
-      <div className="bg-zinc-900 border border-zinc-800 p-10 rounded-3xl w-full max-w-105 shadow-2xl">
+      <div className="bg-zinc-900 border border-zinc-800 p-10 rounded-3xl w-full max-w-[420px] shadow-2xl">
 
-        {/* HEADER */}
+        {/* LOGO */}
+
+        <div className="flex justify-center mb-6">
+
+          <img
+         src="/logo.png"
+    alt="Starbucks"
+    className="w-28 h-28 object-contain"
+          />
+
+        </div>
+
+        {/* TITLE */}
 
         <div className="mb-10 text-center">
 
-          {/* LOGO */}
-
-          <div className="flex justify-center mb-6">
-
-            <img
-              src="/logo.png"
-              alt="Starbucks"
-              className="w-24 h-24 rounded-full object-cover"
-            />
-
-          </div>
-
-          <h1 className="text-white text-5xl font-bold mb-3">
+          <h1 className="text-white text-4xl font-bold mb-3">
             Starbucks
           </h1>
 
@@ -103,14 +145,19 @@ export default function LoginPage() {
 
         <div className="flex flex-col gap-5">
 
+          {/* USERNAME */}
+
           <input
             placeholder="Username"
             value={username}
             onChange={(e) =>
               setUsername(e.target.value)
             }
+            onKeyDown={handleKeyDown}
             className="bg-zinc-800 border border-zinc-700 text-white p-4 rounded-2xl outline-none text-lg"
           />
+
+          {/* PASSWORD */}
 
           <input
             type="password"
@@ -119,17 +166,22 @@ export default function LoginPage() {
             onChange={(e) =>
               setPassword(e.target.value)
             }
+            onKeyDown={handleKeyDown}
             className="bg-zinc-800 border border-zinc-700 text-white p-4 rounded-2xl outline-none text-lg"
           />
+
+          {/* LOGIN BUTTON */}
 
           <button
             onClick={login}
             disabled={loading}
             className="bg-green-700 hover:bg-green-600 transition-all text-white font-bold p-4 rounded-2xl text-lg"
           >
+
             {loading
               ? "Logging in..."
               : "Login"}
+
           </button>
 
         </div>

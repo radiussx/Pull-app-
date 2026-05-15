@@ -14,15 +14,15 @@ export default function BottomNav() {
     },
     {
       name: "Bakery",
-      path: "/bakery",
+      path: "/dashboard/bakery",
     },
     {
       name: "Breakfast",
-      path: "/breakfast",
+      path: "/dashboard/breakfast",
     },
     {
       name: "Milk",
-      path: "/milk",
+      path: "/dashboard/milk",
     },
   ];
 

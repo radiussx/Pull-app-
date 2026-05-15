@@ -13,12 +13,21 @@ export default function BakeryPage() {
   const [items, setItems] =
     useState<PullItem[]>([]);
 
+  const [role, setRole] =
+    useState("");
+
   useEffect(() => {
 
     const saved =
       JSON.parse(
-        localStorage.getItem("pullData") || "[]"
+        sessionStorage.getItem("pullData") || "[]"
       );
+
+    // LOAD ROLE
+    const savedRole =
+      sessionStorage.getItem("role") || "";
+
+    setRole(savedRole);
 
     // FILTER BAKERY ITEMS
     const bakeryItems =
@@ -51,28 +60,29 @@ export default function BakeryPage() {
 
     <div className="min-h-screen bg-black text-white px-4 pt-5 pb-28">
 
-       {/* TOP BAR */}
+      {/* TOP BAR */}
 
-    <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6">
 
-      <h1 className="text-3xl font-bold">
-        Bakery Pulls
-      </h1>
+        <h1 className="text-3xl font-bold">
+          Bakery Pulls
+        </h1>
 
-      <button
-        onClick={() => {
+        <button
+          onClick={() => {
 
-          localStorage.removeItem("user");
+            sessionStorage.clear();
 
-          window.location.href = "/";
+            window.location.href = "/";
 
-        }}
-        className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-2xl text-sm font-bold"
-      >
-        Logout
-      </button>
+          }}
+          className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-2xl text-sm font-bold"
+        >
+          Logout
+        </button>
 
-    </div>
+      </div>
+
       {/* CHART */}
 
       <div className="bg-zinc-900 rounded-3xl p-5 mb-6">
@@ -192,6 +202,18 @@ export default function BakeryPage() {
           <span className="text-lg">🥛</span>
           Milk
         </a>
+
+        {role === "admin" && (
+
+          <a
+            href="/dashboard/admin"
+            className="flex flex-col items-center text-red-400 text-[10px]"
+          >
+            <span className="text-lg">🛡️</span>
+            Admin
+          </a>
+
+        )}
 
       </div>
 
