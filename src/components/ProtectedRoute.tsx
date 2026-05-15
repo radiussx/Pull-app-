@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function ProtectedRoute({
   children,
@@ -10,61 +10,31 @@ export default function ProtectedRoute({
 }) {
 
   const router = useRouter();
-  const pathname = usePathname();
 
-  const [loading, setLoading] =
-    useState(true);
-
-  const [authorized, setAuthorized] =
+  const [isReady, setIsReady] =
     useState(false);
 
   useEffect(() => {
 
-    const timer = setTimeout(() => {
+    const user =
+      sessionStorage.getItem("user");
 
-      try {
+    if (!user) {
 
-        const user =
-          window.localStorage.getItem("user");
+      router.replace("/login");
 
-        if (!user) {
+    } else {
 
-          router.replace("/login");
+      setIsReady(true);
+    }
 
-        } else {
+  }, [router]);
 
-          setAuthorized(true);
-        }
-
-      } catch (error) {
-
-        console.log(error);
-
-        router.replace("/login");
-      }
-
-      setLoading(false);
-
-    }, 300);
-
-    return () => clearTimeout(timer);
-
-  }, [pathname, router]);
-
-  // LOADING
-  if (loading) {
+  if (!isReady) {
 
     return (
-      <div className="min-h-[100dvh] bg-black flex items-center justify-center text-white">
-        Loading...
-      </div>
+      <div className="min-h-screen bg-black" />
     );
-  }
-
-  // BLOCK PAGE
-  if (!authorized) {
-
-    return null;
   }
 
   return <>{children}</>;

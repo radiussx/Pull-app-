@@ -30,30 +30,26 @@ export default function LoginPage() {
 
       if (data.success) {
 
-        // SAVE LOGIN SESSION
+        // =========================
+        // SAVE SESSION
+        // =========================
 
-        window.localStorage.setItem(
-  "loggedIn",
-  "true"
-);
-      
+        sessionStorage.setItem(
+          "user",
+          username
+        );
 
-        // SAVE USERNAME
+        sessionStorage.setItem(
+          "username",
+          username
+        );
 
-        window.localStorage.setItem(
-  "username",
-  username
-);
-        // OLD USER STORAGE (KEEPING FOR COMPATIBILITY)
-
-       window.localStorage.setItem(
-  "user",
-  username
-);
-
+        // =========================
         // REDIRECT
+        // =========================
 
-router.replace("/dashboard");
+        router.replace("/dashboard");
+
       } else {
 
         alert("Invalid login");
@@ -73,10 +69,25 @@ router.replace("/dashboard");
 
   return (
 
-<main className="min-h-dvh bg-black flex items-center justify-center px-5">
-      <div className="bg-zinc-900 border border-zinc-800 p-10 rounded-3xl w-full max-w-[420px] shadow-2xl">
+    <main className="min-h-dvh bg-black flex items-center justify-center px-5">
 
-        <div className="mb-10">
+      <div className="bg-zinc-900 border border-zinc-800 p-10 rounded-3xl w-full max-w-105 shadow-2xl">
+
+        {/* HEADER */}
+
+        <div className="mb-10 text-center">
+
+          {/* LOGO */}
+
+          <div className="flex justify-center mb-6">
+
+            <img
+              src="/logo.png"
+              alt="Starbucks"
+              className="w-24 h-24 rounded-full object-cover"
+            />
+
+          </div>
 
           <h1 className="text-white text-5xl font-bold mb-3">
             Starbucks
@@ -87,6 +98,8 @@ router.replace("/dashboard");
           </p>
 
         </div>
+
+        {/* FORM */}
 
         <div className="flex flex-col gap-5">
 
