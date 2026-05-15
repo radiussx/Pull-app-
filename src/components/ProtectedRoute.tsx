@@ -20,56 +20,44 @@ export default function ProtectedRoute({
 
     async function verifySession() {
 
+      const loggedIn =
+        localStorage.getItem("loggedIn");
+
+      const sessionId =
+        localStorage.getItem("sessionId");
+
+      // NOT LOGGED IN
+
+      if (
+        loggedIn !== "true" ||
+        !sessionId
+      ) {
+
+        localStorage.clear();
+
+        router.replace("/login");
+
+        return;
+      }
+
       try {
 
-        const loggedIn =
-          localStorage.getItem("loggedIn");
-
-        const sessionId =
-          localStorage.getItem("sessionId");
-
-        // =========================
-        // LOCAL CHECK
-        // =========================
-
-        if (
-          loggedIn !== "true" ||
-          !sessionId
-        ) {
-
-          localStorage.clear();
-
-          router.replace("/login");
-
-          return;
-        }
-
-        // =========================
-        // CHECK ACTIVE SESSION
-        // =========================
-
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_SCRIPT_URL}?action=getSessions`
+          `${process.env.NEXT_PUBLIC_SCRIPT_URL}?action=verifySession&sessionId=${sessionId}`
         );
 
-        const sessions =
+        const data =
           await response.json();
 
-        const validSession =
-          sessions.find(
-            (s: any) =>
-              s.sessionId === sessionId
-          );
+        // SESSION DISABLED
 
-        // =========================
-        // FORCE LOGOUT DETECTED
-        // =========================
-
-        if (!validSession) {
-
-          alert("Your session has ended.");
+        if (!data.active) {
 
           localStorage.clear();
+
+          alert(
+            "You were logged out by admin."
+          );
 
           router.replace("/login");
 
@@ -81,37 +69,33 @@ export default function ProtectedRoute({
       } catch (error) {
 
         console.error(error);
-
-        localStorage.clear();
-
-        router.replace("/login");
       }
     }
 
-    // FIRST CHECK
+    // INITIAL CHECK
+
     verifySession();
 
-    // LIVE CHECK EVERY 3 SECONDS
+    // CHECK EVERY 5 SECONDS
+
     interval = setInterval(() => {
 
       verifySession();
 
-    }, 3000);
+    }, 5000);
 
     return () => clearInterval(interval);
 
   }, [router]);
 
-  // =========================
   // LOADING
-  // =========================
 
   if (!authorized) {
 
     return (
 
-      <div className="min-h-screen bg-black text-white flex items-center justify-center text-xl font-bold">
-        Checking Session...
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        Loading...
       </div>
     );
   }
