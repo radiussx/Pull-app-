@@ -35,7 +35,7 @@ export default function DeckPage() {
     new Date().toDateString();
 
   const lastOpenDate =
-    sessionStorage.getItem("lastOpenDate");
+    localStorage.getItem("lastOpenDate");
 
   // =========================
   // RESET DAILY VALUES
@@ -44,13 +44,13 @@ export default function DeckPage() {
   if (lastOpenDate !== today) {
 
     // reset inventory values
-    sessionStorage.removeItem("onHandValues");
+    localStorage.removeItem("onHandValues");
 
     // reset pull display
-    sessionStorage.removeItem("pullData");
+    localStorage.removeItem("pullData");
 
     // save today's date
-    sessionStorage.setItem(
+    localStorage.setItem(
       "lastOpenDate",
       today
     );
@@ -71,7 +71,7 @@ export default function DeckPage() {
 
       const savedValues =
         JSON.parse(
-          sessionStorage.getItem("onHandValues") || "{}"
+          localStorage.getItem("onHandValues") || "{}"
         );
 
       setOnHandValues(savedValues);
@@ -94,9 +94,9 @@ export default function DeckPage() {
 
   const logout = () => {
 
-    sessionStorage.removeItem("loggedIn");
-    sessionStorage.removeItem("username");
-    sessionStorage.removeItem("user");
+    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("username");
+    localStorage.removeItem("user");
 
     router.push("/");
   };
@@ -153,7 +153,7 @@ export default function DeckPage() {
             pullRequired,
 
             updatedBy:
-              sessionStorage.getItem("username") ||
+              localStorage.getItem("username") ||
               "Unknown",
 
             pullTime: "AM",
@@ -179,7 +179,7 @@ export default function DeckPage() {
 
         setOnHandValues(updatedOnHand);
 
-        sessionStorage.setItem(
+        localStorage.setItem(
           "onHandValues",
           JSON.stringify(updatedOnHand)
         );
@@ -191,7 +191,7 @@ export default function DeckPage() {
 
         let existing =
           JSON.parse(
-            sessionStorage.getItem("pullData") || "[]"
+            localStorage.getItem("pullData") || "[]"
           );
 
         // remove old frontend entry
@@ -210,7 +210,7 @@ export default function DeckPage() {
           onHand,
         });
 
-        sessionStorage.setItem(
+        localStorage.setItem(
           "pullData",
           JSON.stringify(existing)
         );
@@ -454,7 +454,7 @@ export default function DeckPage() {
             <span className="text-lg">🥛</span>
             Milk
           </a>
-{sessionStorage.getItem("role") === "admin" && (
+{localStorage.getItem("role") === "admin" && (
 
   <a
     href="/dashboard/admin"

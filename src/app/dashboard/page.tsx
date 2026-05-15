@@ -20,12 +20,12 @@ export default function DashboardPage() {
   useEffect(() => {
 
     const savedRole =
-      sessionStorage.getItem("role") || "";
+      localStorage.getItem("role") || "";
 
     setRole(savedRole);
 
     const user =
-      sessionStorage.getItem("user") || "";
+      localStorage.getItem("user") || "";
 
     setUsername(user);
 
@@ -37,7 +37,7 @@ export default function DashboardPage() {
 
   const logout = () => {
 
-    sessionStorage.clear();
+    localStorage.clear();
 
     window.location.href = "/login";
   };

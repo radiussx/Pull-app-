@@ -20,12 +20,12 @@ export default function MilkPage() {
 
     const saved =
       JSON.parse(
-        sessionStorage.getItem("pullData") || "[]"
+        localStorage.getItem("pullData") || "[]"
       );
 
     // LOAD ROLE
     const savedRole =
-      sessionStorage.getItem("role") || "";
+      localStorage.getItem("role") || "";
 
     setRole(savedRole);
 
@@ -71,7 +71,7 @@ export default function MilkPage() {
         <button
           onClick={() => {
 
-            sessionStorage.clear();
+            localStorage.clear();
 
             window.location.href = "/";
 

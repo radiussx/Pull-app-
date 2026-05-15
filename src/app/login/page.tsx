@@ -41,31 +41,31 @@ export default function LoginPage() {
 
         // CLEAR OLD STORAGE
 
-        sessionStorage.clear();
+        localStorage.clear();
 
         // SAVE SESSION
 
-        sessionStorage.setItem(
+        localStorage.setItem(
           "loggedIn",
           "true"
         );
 
-        sessionStorage.setItem(
+        localStorage.setItem(
           "username",
           username
         );
 
-        sessionStorage.setItem(
+        localStorage.setItem(
           "user",
           username
         );
 
-        sessionStorage.setItem(
+        localStorage.setItem(
           "role",
           data.role
         );
 
-        sessionStorage.setItem(
+        localStorage.setItem(
           "sessionId",
           data.sessionId
         );

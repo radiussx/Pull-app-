@@ -29,7 +29,7 @@ export default function AdminPage() {
   useEffect(() => {
 
     const role =
-      sessionStorage.getItem("role");
+      localStorage.getItem("role");
 
     if (role !== "admin") {
 
@@ -109,7 +109,7 @@ export default function AdminPage() {
 
   function logout() {
 
-    sessionStorage.clear();
+    localStorage.clear();
 
     window.location.href =
       "/login";

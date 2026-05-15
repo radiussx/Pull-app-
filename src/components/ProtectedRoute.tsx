@@ -23,10 +23,10 @@ export default function ProtectedRoute({
       try {
 
         const loggedIn =
-          sessionStorage.getItem("loggedIn");
+          localStorage.getItem("loggedIn");
 
         const sessionId =
-          sessionStorage.getItem("sessionId");
+          localStorage.getItem("sessionId");
 
         // =========================
         // LOCAL CHECK
@@ -37,7 +37,7 @@ export default function ProtectedRoute({
           !sessionId
         ) {
 
-          sessionStorage.clear();
+          localStorage.clear();
 
           router.replace("/login");
 
@@ -69,7 +69,7 @@ export default function ProtectedRoute({
 
           alert("Your session has ended.");
 
-          sessionStorage.clear();
+          localStorage.clear();
 
           router.replace("/login");
 
@@ -82,7 +82,7 @@ export default function ProtectedRoute({
 
         console.error(error);
 
-        sessionStorage.clear();
+        localStorage.clear();
 
         router.replace("/login");
       }
