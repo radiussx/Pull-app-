@@ -17,6 +17,38 @@ export default function LoginPage() {
     useState(false);
 
   // =========================
+  // DEVICE FINGERPRINT
+  // =========================
+
+  function generateFingerprint() {
+
+    return btoa(
+
+      JSON.stringify({
+
+        ua: navigator.userAgent,
+
+        width: screen.width,
+
+        height: screen.height,
+
+        timezone:
+          Intl.DateTimeFormat()
+            .resolvedOptions()
+            .timeZone,
+
+        language:
+          navigator.language,
+
+        platform:
+          navigator.platform
+
+      })
+
+    );
+  }
+
+  // =========================
   // LOGIN
   // =========================
 
@@ -26,8 +58,38 @@ export default function LoginPage() {
 
       setLoading(true);
 
+      // =========================
+      // DEVICE INFO
+      // =========================
+
+      const device =
+        navigator.userAgent;
+
+      const fingerprint =
+        generateFingerprint();
+
+      // =========================
+      // GET IP
+      // =========================
+
+      const ipRes = await fetch(
+        "https://api.ipify.org?format=json"
+      );
+
+      const ipData =
+        await ipRes.json();
+
+      const ip =
+        ipData.ip;
+
+      // =========================
+      // LOGIN REQUEST
+      // =========================
+
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SCRIPT_URL}?action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+
+        `${process.env.NEXT_PUBLIC_SCRIPT_URL}?action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&ip=${encodeURIComponent(ip)}&device=${encodeURIComponent(device)}&fingerprint=${encodeURIComponent(fingerprint)}`
+
       );
 
       const data =
@@ -39,11 +101,7 @@ export default function LoginPage() {
 
       if (data.success) {
 
-        // CLEAR OLD STORAGE
-
         localStorage.clear();
-
-        // SAVE SESSION
 
         localStorage.setItem(
           "loggedIn",
@@ -70,7 +128,16 @@ export default function LoginPage() {
           data.sessionId
         );
 
-        // REDIRECT
+        // =========================
+        // NEW DEVICE ALERT
+        // =========================
+
+        if (data.newDevice) {
+
+          alert(
+            "New device detected for this account."
+          );
+        }
 
         router.replace("/dashboard");
 
@@ -81,7 +148,9 @@ export default function LoginPage() {
       // INVALID LOGIN
       // =========================
 
-      alert("Invalid username or password");
+      alert(
+        "Invalid username or password"
+      );
 
     } catch (error) {
 
@@ -96,7 +165,7 @@ export default function LoginPage() {
   }
 
   // =========================
-  // ENTER KEY SUPPORT
+  // ENTER SUPPORT
   // =========================
 
   function handleKeyDown(
@@ -109,6 +178,10 @@ export default function LoginPage() {
     }
   }
 
+  // =========================
+  // UI
+  // =========================
+
   return (
 
     <main className="min-h-screen bg-black flex items-center justify-center px-5">
@@ -120,9 +193,9 @@ export default function LoginPage() {
         <div className="flex justify-center mb-6">
 
           <img
-         src="/logo.png"
-    alt="Starbucks"
-    className="w-28 h-28 object-contain"
+            src="/logo.png"
+            alt="Starbucks"
+            className="w-28 h-28 object-contain"
           />
 
         </div>
